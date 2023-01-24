@@ -1,4 +1,4 @@
-package ru.job4j.itereator;
+package ru.job4j.iterator;
 
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;

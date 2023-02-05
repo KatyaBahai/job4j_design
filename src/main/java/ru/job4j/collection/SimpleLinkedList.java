@@ -18,13 +18,10 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
             head = newNode;
         } else {
             Node<E> nextNode = head;
-            for (int i = 0; i < size; i++) {
-                if (nextNode.next == null) {
-                    nextNode.next = newNode;
-                    break;
-                }
+            while (nextNode.next != null) {
                 nextNode = nextNode.next;
             }
+           nextNode.next = newNode;
         }
         size++;
         modCount++;
@@ -33,12 +30,9 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
     @Override
     public E get(int index) {
         Objects.checkIndex(index, size);
-        int count = 0;
         Node<E> prevNode = head;
-        Node<E> nextNode = head;
-        while (count < index) {
+        for (int i = 0; i < index; i++) {
             prevNode = prevNode.next;
-            count++;
         }
         return prevNode.item;
     }
@@ -46,17 +40,15 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
-            private int pointer = 0;
             private int expectedModCount = modCount;
-            Node<E> prevNode = head;
-            Node<E> nextNode = null;
+            Node<E> pointer = new Node<E>(null, head);
 
             @Override
             public boolean hasNext() {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return pointer < size;
+                return pointer.next != null;
             }
 
             @Override
@@ -64,13 +56,8 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                Node<E> resultNode = head;
-                if (pointer != 0) {
-                    nextNode = prevNode.next;
-                    prevNode = nextNode;
-                }
-                pointer++;
-                return prevNode.item;
+                    pointer = pointer.next;
+                    return pointer.item;
             }
         };
     }

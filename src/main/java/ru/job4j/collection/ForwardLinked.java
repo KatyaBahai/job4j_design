@@ -44,6 +44,8 @@ public class ForwardLinked<T> implements Iterable<T> {
         head.next = newHead.next;
         size--;
         modCount++;
+        newHead.item = null;
+        newHead.next = null;
         return deleted.item;
     }
 

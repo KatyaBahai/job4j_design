@@ -19,13 +19,12 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean put(K key, V value) {
         boolean rsl = false;
-        if ((float) count / (float) capacity >= LOAD_FACTOR) {
+        if (1f * count / capacity >= LOAD_FACTOR) {
             expand();
         }
         MapEntry<K, V> mapEntry = new MapEntry<>(key, value);
-        int index = key == null ? 0 : indexFor(hash(key.hashCode()));
-        if (table[index] == null) {
-            table[index] = mapEntry;
+        if (table[buckIndex(key)] == null) {
+            table[buckIndex(key)] = mapEntry;
             rsl = true;
             count++;
             modCount++;
@@ -33,52 +32,51 @@ public class SimpleMap<K, V> implements Map<K, V> {
         return rsl;
     }
 
+    private int buckIndex(K key) {
+        return key == null ? 0 : indexFor(hash(key.hashCode()));
+    }
+
     private int hash(int hashCode) {
         return (hashCode == 0) ? 0 : hashCode ^ (hashCode >>> 16);
     }
 
     private int indexFor(int hash) {
-        return hash & (table.length - 1);
+        return hash & (capacity - 1);
     }
 
     private void expand() {
-        MapEntry<K, V>[] newTable = new MapEntry[capacity * 2];
-        MapEntry<K, V>[] tempTable = table;
-        table = newTable;
-        for (MapEntry<K, V> kvMapEntry : tempTable) {
+        capacity *= 2;
+        MapEntry<K, V>[] newTable = new MapEntry[capacity];
+        for (MapEntry<K, V> kvMapEntry : table) {
             if (kvMapEntry != null) {
-                int index = kvMapEntry.key == null ? 0 : indexFor(hash(kvMapEntry.key.hashCode()));
-                table[index] = kvMapEntry;
+                newTable[buckIndex(kvMapEntry.key)] = kvMapEntry;
             }
         }
+        table = newTable;
     }
 
     @Override
     public V get(K key) {
         V value = null;
+        int index = buckIndex(key);
         int keyHashCode = key == null ? 0 : key.hashCode();
-        for (MapEntry<K, V> kvMapEntry : table) {
-            if (kvMapEntry == null) {
-                continue;
+            if (table[index] != null && table[index].key == null && key == null) {
+                value = table[index].value;
             }
-            if (kvMapEntry.key == null && key == null) {
-                value = kvMapEntry.value;
-                break;
+        if (table[index] != null
+                && table[index].key != null
+                && table[index].key.hashCode() == keyHashCode
+                && table[index].key.equals(key)) {
+                value = table[index].value;
             }
-            if (kvMapEntry.key != null && kvMapEntry.key.hashCode() == keyHashCode && kvMapEntry.key.equals(key)) {
-                value = kvMapEntry.value;
-                break;
-            }
-        }
         return value;
     }
 
     @Override
     public boolean remove(K key) {
         boolean rsl = false;
-       int index = key == null ? 0 : indexFor(hash(key.hashCode()));
-       if (table[index] != null) {
-           table[index] = null;
+        if (table[buckIndex(key)] != null) {
+           table[buckIndex(key)] = null;
            modCount++;
            count--;
            rsl = true;
@@ -90,12 +88,15 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public Iterator<K> iterator() {
         return new Iterator<K>() {
             int modCountCheck = modCount;
-            int number = 0;
             int index = 0;
+            int number = 0;
             @Override
             public boolean hasNext() {
                 if (modCount != modCountCheck) {
                     throw new ConcurrentModificationException();
+                }
+                while (index < capacity && table[index] == null) {
+                    index++;
                 }
                 return number < count;
             }
@@ -105,16 +106,8 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                K key = null;
-                for (int i = index; i < table.length; i++) {
-                    index++;
-                    if (table[i] != null) {
-                        key = table[i].key;
-                        number++;
-                        break;
-                }
-                }
-                return key;
+                number++;
+                return table[index++].key;
             }
         };
     }

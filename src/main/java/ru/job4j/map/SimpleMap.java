@@ -3,6 +3,7 @@ package ru.job4j.map;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -19,12 +20,14 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean put(K key, V value) {
         boolean rsl = false;
-        if (1f * count / capacity >= LOAD_FACTOR) {
+
+        if (count >= capacity * LOAD_FACTOR) {
             expand();
         }
         MapEntry<K, V> mapEntry = new MapEntry<>(key, value);
-        if (table[buckIndex(key)] == null) {
-            table[buckIndex(key)] = mapEntry;
+        int index = buckIndex(key);
+        if (table[index] == null) {
+            table[index] = mapEntry;
             rsl = true;
             count++;
             modCount++;
@@ -37,7 +40,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int hash(int hashCode) {
-        return (hashCode == 0) ? 0 : hashCode ^ (hashCode >>> 16);
+        return hashCode ^ (hashCode >>> 16);
     }
 
     private int indexFor(int hash) {
@@ -59,24 +62,24 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public V get(K key) {
         V value = null;
         int index = buckIndex(key);
-        int keyHashCode = key == null ? 0 : key.hashCode();
-            if (table[index] != null && table[index].key == null && key == null) {
-                value = table[index].value;
-            }
-        if (table[index] != null
-                && table[index].key != null
-                && table[index].key.hashCode() == keyHashCode
-                && table[index].key.equals(key)) {
-                value = table[index].value;
-            }
+        int keyHashCode = Objects.hashCode(key);
+            if (table[index] != null
+                    && Objects.hashCode(table[index].key) == keyHashCode
+                    && Objects.equals(table[index].key, key)) {
+            value = table[index].value;
+        }
         return value;
     }
 
     @Override
     public boolean remove(K key) {
         boolean rsl = false;
-        if (table[buckIndex(key)] != null) {
-           table[buckIndex(key)] = null;
+        int index = buckIndex(key);
+        int keyHashCode = Objects.hashCode(key);
+        if (table[index] != null
+                && Objects.hashCode(table[index].key) == keyHashCode
+                && Objects.equals(table[index].key, key)) {
+           table[index] = null;
            modCount++;
            count--;
            rsl = true;
@@ -86,7 +89,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public Iterator<K> iterator() {
-        return new Iterator<K>() {
+        return new Iterator<>() {
             int modCountCheck = modCount;
             int index = 0;
             int number = 0;

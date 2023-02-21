@@ -58,15 +58,23 @@ public class SimpleMap<K, V> implements Map<K, V> {
         table = newTable;
     }
 
+    private boolean isPresent(K key) {
+        boolean rsl = false;
+        int index = buckIndex(key);
+        int keyHashCode = Objects.hashCode(key);
+        if (table[index] != null
+                && Objects.hashCode(table[index].key) == keyHashCode
+                && Objects.equals(table[index].key, key)) {
+            rsl = true;
+        }
+        return rsl;
+    }
+
     @Override
     public V get(K key) {
         V value = null;
-        int index = buckIndex(key);
-        int keyHashCode = Objects.hashCode(key);
-            if (table[index] != null
-                    && Objects.hashCode(table[index].key) == keyHashCode
-                    && Objects.equals(table[index].key, key)) {
-            value = table[index].value;
+        if (isPresent(key)) {
+            value = table[buckIndex(key)].value;
         }
         return value;
     }
@@ -74,12 +82,8 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean remove(K key) {
         boolean rsl = false;
-        int index = buckIndex(key);
-        int keyHashCode = Objects.hashCode(key);
-        if (table[index] != null
-                && Objects.hashCode(table[index].key) == keyHashCode
-                && Objects.equals(table[index].key, key)) {
-           table[index] = null;
+        if (isPresent(key)) {
+           table[buckIndex(key)] = null;
            modCount++;
            count--;
            rsl = true;

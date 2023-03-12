@@ -1,24 +1,22 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.StringJoiner;
 
 public class Analysis {
     public void unavailable(String source, String target) {
         try (BufferedReader reader = new BufferedReader(new FileReader(source));
         PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(target)))) {
-            List<String> list = new ArrayList<>();
-            reader.lines().forEach(list::add);
             String start = null;
-            for (String line : list) {
+            while (reader.ready()) {
+                String line = reader.readLine();
                 String[] strings = line.split(" ");
                 boolean error = "400".equals(strings[0]) || "500".equals(strings[0]);
                 if (start == null && error) {
                     start = strings[1];
-                    writer.print(start + "; ");
+                    writer.printf("%s; ", strings[1]);
                 } else if (start != null && !error) {
-                    writer.println(strings[1] + ";");
+                    writer.printf("%s;%n", strings[1]);
                     start = null;
                 }
             }

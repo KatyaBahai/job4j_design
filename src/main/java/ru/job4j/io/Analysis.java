@@ -15,7 +15,7 @@ public class Analysis {
                     writer.printf("%s; ", strings[1]);
                     start = false;
                 } else if (!start && !error) {
-                    writer.printf("%s;%n", strings[1]);
+                    writer.printf("%s; %n", strings[1]);
                     start = true;
                 }
             }

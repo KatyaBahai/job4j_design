@@ -11,13 +11,9 @@ public class Analysis {
                 String line = reader.readLine();
                 String[] strings = line.split(" ");
                 boolean error = "400".equals(strings[0]) || "500".equals(strings[0]);
-                if (start && error) {
-                    writer.printf("%s; ", strings[1]);
-                    start = false;
-                }
-                if (!start && !error) {
-                    writer.printf("%s; %n", strings[1]);
-                    start = true;
+                if (start == error) {
+                    writer.printf(start ? "%s; " : "%s; %n", strings[1]);
+                    start = !start;
                 }
             }
         } catch (IOException e) {

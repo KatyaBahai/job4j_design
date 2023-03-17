@@ -27,7 +27,7 @@ public class PrintUsage {
 
     public static void printAttributes(String address) throws IOException {
         Path file = Path.of(address);
-       // Files.createFile(file);
+        Files.createFile(file);
         BasicFileAttributeView attrView = Files.getFileAttributeView(file, BasicFileAttributeView.class);
         BasicFileAttributes attributes = attrView.readAttributes();
         System.out.println(attributes.creationTime());

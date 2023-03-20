@@ -2,6 +2,7 @@ package ru.job4j.io;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -21,11 +22,16 @@ public class Search {
     }
 
     private static void paramValidate(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("Root folder is null. Use ROOT-FOLDER");
+        if (args.length != 2) {
+            throw new IllegalArgumentException("Root folder must 2 parameters. Use ROOT_FOLDER");
         }
-        if (args.length < 2) {
-            throw new IllegalArgumentException("Extension is missing. Use ROOT-FOLDER");
+        try {
+            Paths.get(args[0]);
+        } catch (InvalidPathException ex) {
+            throw new InvalidPathException(args[0], "The 1 parameter in Root Folder is not a path.");
+        }
+        if (args[1].charAt(0) != '.') {
+            throw new IllegalArgumentException("The 2 parameter should be a file extension. Use ROOT-FOLDER");
         }
     }
 }

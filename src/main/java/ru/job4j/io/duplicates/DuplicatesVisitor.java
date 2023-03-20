@@ -17,8 +17,7 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         FileProperty fileProperty = new FileProperty(attrs.size(), file.getFileName().toString());
-        ArrayList<String> list = new ArrayList<>();
-        map.putIfAbsent(fileProperty, list);
+        map.putIfAbsent(fileProperty, new ArrayList<>());
         map.get(fileProperty).add(file.toAbsolutePath().toString());
         return FileVisitResult.CONTINUE;
     }

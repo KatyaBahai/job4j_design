@@ -16,16 +16,10 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        if (attrs.isRegularFile()) {
-            FileProperty fileProperty = new FileProperty(attrs.size(), file.getFileName().toString());
-            if (map.containsKey(fileProperty)) {
-                map.get(fileProperty).add(file.toAbsolutePath().toString());
-            } else {
-                ArrayList<String> list = new ArrayList<>();
-                list.add(file.toAbsolutePath().toString());
-                map.put(fileProperty, list);
-            }
-        }
+        FileProperty fileProperty = new FileProperty(attrs.size(), file.getFileName().toString());
+        ArrayList<String> list = new ArrayList<>();
+        map.putIfAbsent(fileProperty, list);
+        map.get(fileProperty).add(file.toAbsolutePath().toString());
         return FileVisitResult.CONTINUE;
     }
 

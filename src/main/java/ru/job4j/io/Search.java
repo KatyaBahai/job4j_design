@@ -25,12 +25,19 @@ public class Search {
         if (args.length != 2) {
             throw new IllegalArgumentException("Root folder must 2 parameters. Use ROOT_FOLDER");
         }
+        Path path;
         try {
-            Paths.get(args[0]);
+            path = Paths.get(args[0]);
         } catch (InvalidPathException ex) {
             throw new InvalidPathException(args[0], "The 1 parameter in Root Folder is not a path.");
         }
-        if (args[1].charAt(0) != '.') {
+        if (!Files.exists(path)) {
+            throw new IllegalArgumentException("The path in 1 parameter doesn't exist.");
+        }
+        if (!Files.isDirectory(path)) {
+    throw new IllegalArgumentException("The path in parameter is not a directory.");
+        }
+        if (args[1].length() < 2 || args[1].charAt(0) != '.') {
             throw new IllegalArgumentException("The 2 parameter should be a file extension. Use ROOT-FOLDER");
         }
     }

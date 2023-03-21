@@ -2,7 +2,6 @@ package ru.job4j.io;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 public class ArgsName {
 
@@ -17,37 +16,35 @@ public class ArgsName {
 
     private void parse(String[] args) {
         for (String string : args) {
+            validateArgs(string);
             String[] temp = string.split("=", 2);
             values.put(temp[0].substring(1), temp[1]);
         }
     }
 
     public static ArgsName of(String[] args) {
-        validateArgs(args);
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Arguments not passed to program");
+        }
         ArgsName names = new ArgsName();
         names.parse(args);
         return names;
     }
 
-    private static void validateArgs(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("Arguments not passed to program");
-        }
-        for (String string : args) {
+    private static void validateArgs(String string) {
             if (!string.startsWith("-")) {
-                throw new IllegalArgumentException("Error: This argument '" + string + "' does not start with a '-' character");
+                throw new IllegalArgumentException(String.format("Error: This argument '%s' does not start with a '-' character", string));
             }
             if (!string.contains("=")) {
-                throw new IllegalArgumentException("Error: This argument '" + string + "' does not contain an equal sign");
+                throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain an equal sign", string));
             }
             if (string.charAt(1) == '=') {
-                throw new IllegalArgumentException("Error: This argument '" + string + "' does not contain a key");
+                throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain a key", string));
             }
             String[] temp = string.split("=", 2);
             if (temp[1].isEmpty()) {
-                throw new IllegalArgumentException(("Error: This argument '" + string + "' does not contain a value"));
+                throw new IllegalArgumentException((String.format("Error: This argument '%s' does not contain a value", string)));
             }
-        }
     }
 
     public static void main(String[] args) {

@@ -24,17 +24,6 @@ public class Zip {
             }
         }
 
-  /*  public void packSingleFile(Path source, Path target) {
-        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(String.valueOf(target)))) {
-            zip.putNextEntry(new ZipEntry(source.toString()));
-            try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source.toString()))) {
-                zip.write(out.readAllBytes());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    } */
-
     private static void validateArgs(String[] args) {
         if (args.length != 3) {
             throw new IllegalArgumentException("Root folder must have 3 parameters. Use ROOT_FOLDER");
@@ -62,7 +51,7 @@ public class Zip {
 
     public static List<Path> filter(ArgsName argsName) throws IOException {
         return Search.search(Path.of(argsName.get("d")),
-                p -> p.toFile().getName().endsWith(argsName.get("e")));
+                p -> !p.toFile().getName().endsWith(argsName.get("e")));
     }
 
     public static void main(String[] args) throws IOException {

@@ -13,6 +13,7 @@ public class ConsoleChat {
     private static final String STOP = "стоп";
     private static final String CONTINUE = "продолжить";
     private static List<String> log = new ArrayList<>();
+    private Random random = new Random();
     private final String path;
     private final String botAnswers;
 
@@ -27,6 +28,7 @@ public class ConsoleChat {
         Scanner scanner = new Scanner(System.in);
         String newMessage = scanner.nextLine();
         log.add(newMessage);
+        List<String> answers = readPhrases();
         while (!OUT.equals(newMessage)) {
             if (STOP.equals(newMessage)) {
                 while (!CONTINUE.equals(newMessage)) {
@@ -34,8 +36,6 @@ public class ConsoleChat {
                     log.add(newMessage);
                 }
             }
-            List<String> answers = readPhrases();
-            Random random = new Random();
             int randomNumber = random.nextInt(answers.size());
             String botAnswer = answers.get(randomNumber);
             System.out.println(botAnswer);

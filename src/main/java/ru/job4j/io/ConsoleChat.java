@@ -1,6 +1,7 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -45,7 +46,7 @@ public class ConsoleChat {
 
     private List<String> readPhrases() {
         List<String> list = new ArrayList<>();
-       try (BufferedReader reader = new BufferedReader(new FileReader(botAnswers))) {
+       try (BufferedReader reader = new BufferedReader(new FileReader(botAnswers, Charset.forName("WINDOWS-1251")))) {
            reader.lines().forEach(list::add);
        } catch (IOException e) {
            e.printStackTrace();
@@ -54,7 +55,7 @@ public class ConsoleChat {
     }
 
     private void saveLog(List<String> log) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(path, true))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(path, Charset.forName("WINDOWS-1251"), true))) {
             log.forEach(writer::println);
         } catch (IOException e) {
             e.printStackTrace();

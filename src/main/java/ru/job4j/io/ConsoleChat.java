@@ -40,6 +40,7 @@ public class ConsoleChat {
             System.out.println(botAnswer);
             log.add(botAnswer);
             newMessage = scanner.nextLine();
+            log.add(botAnswer);
             }
         saveLog(log);
         }

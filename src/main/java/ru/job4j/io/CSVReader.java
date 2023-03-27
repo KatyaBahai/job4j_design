@@ -1,5 +1,7 @@
 package ru.job4j.io;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -9,40 +11,51 @@ import java.util.*;
 public class CSVReader {
     public static void handle(ArgsName argsName) {
         List<String[]> rowsList = new ArrayList<>();
-        try (Scanner scanner = new Scanner(argsName.get("path")).useDelimiter(" ")) {
+        Path path = Paths.get(argsName.get("path")).toAbsolutePath();
+        try (Scanner scanner = new Scanner(path).useDelimiter(System.lineSeparator())) {
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
-                String[] row = line.split(";");
+                String[] row = line.split(argsName.get("delimiter"));
                 rowsList.add(row);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         List<Integer> columnNumbers = findColumns(argsName, rowsList.get(0));
-        StringJoiner stringJoiner = new StringJoiner(";");
+        StringJoiner finalJoiner = new StringJoiner(System.lineSeparator(), "", System.lineSeparator());
         for (String[] row : rowsList) {
-            for (int i = 0; i < row.length; i++) {
-                if (columnNumbers.contains(i)) {
-                    stringJoiner.add(row[i]);
-                }
+            StringJoiner stringJoiner = new StringJoiner(argsName.get("delimiter"));
+            for (Integer index : columnNumbers) {
+                    stringJoiner.add(row[index]);
             }
-            stringJoiner.add("," + System.lineSeparator());
+            finalJoiner.add(stringJoiner.toString());
         }
-        System.out.println(stringJoiner);
+        String out = argsName.get("out");
+        if (out.equals("stdout")) {
+            System.out.println(finalJoiner);
+        } else {
+            try (PrintWriter writer = new PrintWriter(out)) {
+                writer.print(finalJoiner);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static List<Integer> findColumns(ArgsName argsName, String[] paramRow) {
-        List<String> columnFilter = Arrays.stream(argsName.get("filter").split(";")).toList();
+        String[] columnFilter = argsName.get("filter").split(",");
         List<Integer> filterColumnNumber = new ArrayList<>();
-        for (int i = 0; i < paramRow.length; i++) {
-            if (columnFilter.contains(paramRow[i])) {
-                filterColumnNumber.add(i);
+        for (String s : columnFilter) {
+            for (int j = 0; j < paramRow.length; j++) {
+                if (s.equals(paramRow[j])) {
+                    filterColumnNumber.add(j);
+                }
             }
         }
         return filterColumnNumber;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         validateArgs(args);
         ArgsName argsName = ArgsName.of(args);
         handle(argsName);
@@ -62,9 +75,9 @@ public class CSVReader {
         if (!Files.exists(path)) {
             throw new IllegalArgumentException("The source path doesn't exist.");
         }
-        if (!path.endsWith(".csv")) {
-            throw new IllegalArgumentException("The path should have a .csv extension.");
-        }
+       if (!path.endsWith(".csv")) {
+          throw new IllegalArgumentException("The path should have a .csv extension.");
+     }
         if (argsName.get("filter").isEmpty()) {
             throw new IllegalArgumentException("The filter for columns is empty.");
         }

@@ -9,11 +9,14 @@ import java.util.*;
 public class CSVReader {
     public static void handle(ArgsName argsName) {
         List<String[]> rowsList = new ArrayList<>();
-        Scanner scanner = new Scanner(argsName.get("path")).useDelimiter(" ");
-        while (scanner.hasNext()) {
-            String line = scanner.nextLine();
-            String[] row = line.split(";");
-            rowsList.add(row);
+        try (Scanner scanner = new Scanner(argsName.get("path")).useDelimiter(" ")) {
+            while (scanner.hasNext()) {
+                String line = scanner.nextLine();
+                String[] row = line.split(";");
+                rowsList.add(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         List<Integer> columnNumbers = findColumns(argsName, rowsList.get(0));
         StringJoiner stringJoiner = new StringJoiner(";");
@@ -38,7 +41,6 @@ public class CSVReader {
         }
         return filterColumnNumber;
     }
-
 
     public static void main(String[] args) {
         validateArgs(args);

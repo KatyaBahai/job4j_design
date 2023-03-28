@@ -75,7 +75,7 @@ public class CSVReader {
         if (!Files.exists(path)) {
             throw new IllegalArgumentException("The source path doesn't exist.");
         }
-       if (!path.endsWith(".csv")) {
+       if (!argsName.get("path").endsWith(".csv")) {
           throw new IllegalArgumentException("The path should have a .csv extension.");
      }
         if (argsName.get("filter").isEmpty()) {

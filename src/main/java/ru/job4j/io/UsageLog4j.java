@@ -8,10 +8,15 @@ public class UsageLog4j {
     private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
 
     public static void main(String[] args) {
-        LOG.trace("trace message");
-        LOG.debug("debug message");
-        LOG.info("info message");
-        LOG.warn("warn message");
-        LOG.error("error message");
+        double doubleNumber = 1000d;
+        int intNumber = 100;
+        float floatNumber = 10.0f;
+        boolean bool = false;
+        char character = 'k';
+        long longNumber = 100100100L;
+        byte byteNumber = 120;
+        short shortNumber = 50;
+        LOG.debug("Only numbers: {}, {}, {}, {}, {}, {}. Then character and boolean: {}, {}. ",
+                doubleNumber, intNumber, floatNumber, longNumber, shortNumber, byteNumber, character, bool);
     }
 }

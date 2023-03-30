@@ -1,0 +1,3 @@
+2023-03-30 18:13:23,587 ERROR ru.job4j.io.EchoServer:main:40 - There's an IOException.
+java.io.IOException: Unsupported code
+	at ru.job4j.io.EchoServer.main(EchoServer.java:38)

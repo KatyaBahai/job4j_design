@@ -16,7 +16,6 @@ public class UsageLog4j {
         long longNumber = 100100100L;
         byte byteNumber = 120;
         short shortNumber = 50;
-        byte bytNumber = 120;
         LOG.debug("Only numbers: {}, {}, {}, {}, {}, {}. Then character and boolean: {}, {}. ",
                 doubleNumber, intNumber, floatNumber, longNumber, shortNumber, byteNumber, character, bool);
     }

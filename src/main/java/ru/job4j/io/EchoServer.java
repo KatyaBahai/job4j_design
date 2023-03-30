@@ -37,7 +37,7 @@ public class EchoServer {
             }
             throw new IOException("Unsupported code");
         } catch (IOException e) {
-            LOG.error("There's an IOException.", e);
+            LOG.error("There's an IOExcepti.", e);
         }
     }
 }

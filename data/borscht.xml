@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Borscht cook="Ivan" cookingTime="2" spicy="true">
+    <recipe cookBook="Grandma's recipe"/>
+    <ingredients>
+        <ingredient>cabbage</ingredient>
+        <ingredient>beetroots</ingredient>
+        <ingredient>meat</ingredient>
+        <ingredient>sour cream</ingredient>
+        <ingredient>dill</ingredient>
+    </ingredients>
+</Borscht>

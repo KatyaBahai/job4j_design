@@ -1,14 +1,25 @@
 package ru.job4j.serialization.json;
 
-import java.net.NoRouteToHostException;
+import javax.xml.bind.annotation.*;
 import java.util.Arrays;
 
+@XmlRootElement(name = "Borscht")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Borscht {
     private Recipe recipe;
+
+    @XmlAttribute
     private String cook;
+
+    @XmlAttribute
     private int cookingTime;
+
+    @XmlElementWrapper
+    @XmlElement(name = "ingredient")
     private String[] ingredients;
     private boolean spicy;
+
+    public Borscht() { }
 
     public Borscht(Recipe recipe, String cook, int cookingTime,
                    String[] ingredients, boolean spicy) {

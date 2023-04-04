@@ -7,7 +7,7 @@ public class PrisonTest {
     public static void main(String[] args) {
         int numberOfTries = 1000;
         Prison prison1 = new Prison();
-      //  execute(prison1, numberOfTries);
+        execute(prison1, numberOfTries);
         System.out.println("---------------------");
         PrisonTwo prison2 = new PrisonTwo();
         execute(prison2, numberOfTries);

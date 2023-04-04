@@ -30,7 +30,27 @@ public class Borscht {
         this.spicy = spicy;
     }
 
-   @Override
+    public String getCook() {
+        return cook;
+    }
+
+    public boolean isSpicy() {
+        return spicy;
+    }
+
+    public int getCookingTime() {
+        return cookingTime;
+    }
+
+    public String[] getIngredients() {
+        return ingredients;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    @Override
     public String toString() {
         return "Borscht{"
                 + "recipe=" + recipe

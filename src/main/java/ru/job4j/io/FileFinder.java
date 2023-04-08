@@ -1,7 +1,4 @@
-package ru.job4j.io.serialization.xml;
-
-import ru.job4j.io.ArgsName;
-import ru.job4j.io.Search;
+package ru.job4j.io;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,7 +25,7 @@ public class FileFinder {
             Pattern pattern = Pattern.compile(modelName);
             Matcher matcher = pattern.matcher(shortFileName.toString());
             matches = matcher.matches();
-        } else {
+       } else {
             PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:" + modelName);
             matches = pathMatcher.matches(shortFileName);
         }
@@ -45,7 +42,9 @@ public class FileFinder {
 
     public static void validateArgs(String[] args, ArgsName argsNames) {
         if (args.length != 4) {
-            throw new IllegalArgumentException("Root folder must have 4 parameters.");
+            throw new IllegalArgumentException("Root folder must have 4 parameters.\n "
+                    + "d: root directory, n: name pattern to search for, "
+                    + "t: 'name', 'mask' or 'regex', o: destination file");
         }
         Path path;
         try {

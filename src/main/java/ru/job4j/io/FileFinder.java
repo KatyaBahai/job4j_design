@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.*;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class FileFinder {
     public static void main(String[] args) throws IOException {
@@ -17,19 +15,12 @@ public class FileFinder {
     }
 
     private static boolean compareName(ArgsName argsNames, Path fileName) {
-        boolean matches;
-        Path shortFileName = fileName.getFileName();
         String modelName = argsNames.get("n");
-        String type = argsNames.get("t");
-        if ("regex".equals(type)) {
-            Pattern pattern = Pattern.compile(modelName);
-            Matcher matcher = pattern.matcher(shortFileName.toString());
-            matches = matcher.matches();
-       } else {
-            PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:" + modelName);
-            matches = pathMatcher.matches(shortFileName);
-        }
-        return matches;
+        return FileSystems.getDefault()
+                .getPathMatcher("regex".equals(argsNames.get("t"))
+                        ? "regex:" + modelName
+                        : "glob:" + modelName)
+                .matches(fileName.getFileName());
     }
 
     private static void writeToFile(String finalDest, String pathToWrite) {

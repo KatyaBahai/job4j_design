@@ -43,7 +43,7 @@ create or replace function tax_after()
 		begin
 		update products
 		set price = price * 1.2
-		where id = (select id from inserted);
+		where id in (select id from inserted);
 		return new;
 		end;
 	$$
@@ -54,3 +54,20 @@ create trigger set_tax
 	referencing new table as inserted
 	for each statement
 	execute procedure tax_after();
+
+create or replace function to_history()
+returns trigger as
+$$
+	begin
+	insert into history_of_price(name, price, date)
+	values(new.name, new.price, new()::timestamp);
+	return new;
+	end;
+$$
+language 'plpgsql';
+
+create trigger add_to_history
+after insert
+on products
+for each row
+execute procedure to_history();

@@ -9,7 +9,6 @@ import ru.job4j.io.Config;
 
 public class ConnectionDemo {
     public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException {
-        Class.forName("org.postgresql.Driver");
         String path = "src/main/java/resources/app.properties";
         Config configuration = new Config(path);
         configuration.load();
@@ -17,6 +16,7 @@ public class ConnectionDemo {
         String login = configuration.value("username");
         String url = configuration.value("url");
 
+        Class.forName(configuration.value("driver"));
         try (Connection connection = DriverManager.getConnection(url, login, password)) {
             DatabaseMetaData metaData = connection.getMetaData();
             System.out.println(metaData.getUserName());

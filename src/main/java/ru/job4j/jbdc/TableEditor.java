@@ -60,12 +60,12 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void createTable(String tableName) {
-            String create = String.format("CREATE TABLE %s();", tableName);
+            String create = String.format("CREATE TABLE IF NOT EXISTS %s();", tableName);
             execStatement(create);
     }
 
     public void dropTable(String tableName) {
-            String drop = String.format("DROP TABLE %s", tableName);
+            String drop = String.format("DROP TABLE IF EXISTS %s", tableName);
             execStatement(drop);
     }
 

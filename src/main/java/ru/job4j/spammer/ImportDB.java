@@ -1,7 +1,5 @@
 package ru.job4j.spammer;
 
-import ru.job4j.jbdc.TableEditor;
-
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -32,12 +30,12 @@ public class ImportDB {
 
     public void save(List<User> users) throws ClassNotFoundException, SQLException {
         Class.forName(cfg.getProperty("jdbc.driver"));
-        createUsersTable("users", "name", "email");
         try (Connection cnt = DriverManager.getConnection(
                 cfg.getProperty("jdbc.url"),
                 cfg.getProperty("jdbc.username"),
                 cfg.getProperty("jdbc.password")
         )) {
+            createUsersTable("users", "name", "email", cnt);
             for (User user : users) {
                 try (PreparedStatement ps = cnt.prepareStatement(
                         "INSERT INTO users(name, email) VALUES(?, ?)")) {
@@ -67,13 +65,13 @@ public class ImportDB {
         }
     }
 
-    public void createUsersTable(String tableName, String col1, String col2) {
-        try (TableEditor tableEditor = new TableEditor(cfg)) {
-            tableEditor.dropTable(tableName);
-            tableEditor.createTable(tableName);
-            tableEditor.addColumn(tableName, col1, "text");
-            tableEditor.addColumn(tableName, col2, "text");
-            System.out.println(tableEditor.getTableScheme(tableName));
+    public void createUsersTable(String tableName, String col1, String col2, Connection cnt) {
+        String create = String.format("CREATE TABLE IF NOT EXISTS %s("
+                + "id serial primary key, "
+                + "%s text,"
+                + "%s text);", tableName, col1, col2);
+        try (Statement statement = cnt.createStatement()) {
+            statement.executeUpdate(create);
         } catch (Exception e) {
             e.printStackTrace();
         }

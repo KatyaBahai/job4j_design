@@ -5,11 +5,11 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static final Integer ADD_POST = 1;
-    public static final Integer ADD_MANY_POST = 2;
-    public static final Integer SHOW_ALL_POSTS = 3;
-    public static final Integer DELETE_POST = 4;
-    public static final Integer SHOW_POSTS = 5;
+    public static final int ADD_POST = 1;
+    public static final int ADD_MANY_POST = 2;
+    public static final int SHOW_ALL_POSTS = 3;
+    public static final int DELETE_POST = 4;
+
 
     public static final String SELECT = "Выберите меню";
     public static final String COUNT = "Выберите количество создаваемых постов";
@@ -56,7 +56,7 @@ public class Menu {
                     createPost(commentGenerator, postStore, text);
                 }
             } else if (SHOW_ALL_POSTS == userChoice) {
-                System.out.println(PostStore.getPosts());
+                System.out.println(postStore.getPosts());
             } else if (DELETE_POST == userChoice) {
                 postStore.removeAll();
                 System.out.println(FOR_DELETE);

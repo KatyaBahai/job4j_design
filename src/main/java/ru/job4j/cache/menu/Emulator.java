@@ -20,18 +20,21 @@ public class Emulator {
                     + "1) Press 1 if you would like to load the contents of a file into a cache.%n"
                     + "2) Press 2 if you would like to get the contents of a file from a cache.%n"
                     + "3) Press any other number to exit the program.%n%n");
-            int choice = scanner.nextInt();
-            System.out.println("Please, enter the desired cache directory.");
-            String dir = scanner.nextLine();
-            String contents = cache.get(dir);
+            int choice = Integer.parseInt(scanner.nextLine());
             if (1 == choice) {
+                cache.get(chooseDirectory(scanner));
                 System.out.println("The contents of the file are in the cache.");
             } else if (2 == choice) {
-                System.out.println(contents);
+                System.out.println(cache.get(chooseDirectory(scanner)));
             } else {
                 run = false;
                 System.out.println("The program is terminated.");
             }
     }
+    }
+
+    private static String chooseDirectory(Scanner scanner) {
+        System.out.println("Please, enter the desired cache directory.");
+        return scanner.nextLine();
     }
 }

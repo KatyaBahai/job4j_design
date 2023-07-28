@@ -17,10 +17,11 @@ public class DirFileCache extends AbstractCache<String, String> {
     protected String load(String key) {
         String absPath = String.format("%s%s", cachingDir, key);
         Path path = Path.of(absPath);
+        String enter = System.lineSeparator();
 
         StringBuilder builder = new StringBuilder();
         try (Stream<String> stream = Files.lines(path)) {
-            stream.forEach(builder::append);
+            stream.forEach((line) -> builder.append(String.format("%s%n", line)));
         } catch (IOException e)  {
             e.printStackTrace();
         }

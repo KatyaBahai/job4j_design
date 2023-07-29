@@ -25,9 +25,7 @@ public class DirFileCache extends AbstractCache<String, String> {
         } catch (IOException e)  {
             e.printStackTrace();
         }
-        String value = builder.toString();
-       put(key, value);
-        return value;
+        return builder.toString();
     }
 
 }

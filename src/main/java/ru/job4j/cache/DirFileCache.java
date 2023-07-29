@@ -17,7 +17,7 @@ public class DirFileCache extends AbstractCache<String, String> {
     protected String load(String key) {
         String absPath = String.format("%s%s", cachingDir, key);
         Path path = Path.of(absPath);
-        String enter = System.lineSeparator();
+        System.out.println("Reading file");
 
         StringBuilder builder = new StringBuilder();
         try (Stream<String> stream = Files.lines(path)) {

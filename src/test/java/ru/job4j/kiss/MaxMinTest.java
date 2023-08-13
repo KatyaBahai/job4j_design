@@ -42,22 +42,7 @@ class MaxMinTest {
     @Test
     void ifStringComparedByCharsThenMinFirstAlphabetically() {
         List<String> stringList = List.of("Jennifer", "Jenni", "Tom");
-        Comparator<String> comparator = (o2, o1) -> {
-            int length = Math.min(o1.length(), o2.length());
-            int rsl = 0;
-            for (int i = 0; i < length; i++) {
-                rsl = Character.toLowerCase(o2.charAt(i)) - Character.toLowerCase(o1.charAt(i));
-                if (rsl != 0) {
-                    return rsl;
-            }
-            }
-            if (o1.length() > o2.length()) {
-                rsl = -1;
-            } else if (o1.length() < o2.length()) {
-                rsl = 1;
-            }
-            return rsl;
-        };
+        Comparator<String> comparator = String::compareTo;
         MaxMin maximum = new MaxMin();
         String rsl = maximum.min(stringList, comparator);
         String expected = "Jenni";
@@ -67,22 +52,7 @@ class MaxMinTest {
     @Test
     void ifStringComparedByCharsThenMaxLastAlphabetically() {
         List<String> stringList = List.of("Jennifer", "Jenni", "Tom");
-        Comparator<String> comparator = (o2, o1) -> {
-            int length = Math.min(o1.length(), o2.length());
-            int rsl = 0;
-            for (int i = 0; i < length; i++) {
-                rsl = Character.toLowerCase(o2.charAt(i)) - Character.toLowerCase(o1.charAt(i));
-                if (rsl != 0) {
-                    return rsl;
-                }
-            }
-            if (o1.length() > o2.length()) {
-                rsl = -1;
-            } else if (o1.length() < o2.length()) {
-                rsl = 1;
-            }
-            return rsl;
-        };
+        Comparator<String> comparator = String::compareTo;
         MaxMin maximum = new MaxMin();
         String rsl = maximum.max(stringList, comparator);
         String expected = "Tom";

@@ -51,7 +51,10 @@ public class Cinema3DTest {
         Account account = new CinemaAccount();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
-        assertThatThrownBy(() -> cinema.buy(account, 1, 1, date)).
+        Session session = new Session3D();
+        session.setTheDate(date);
+        cinema.add(session);
+        assertThatThrownBy(() -> cinema.buy(account, 1, 1, Calendar.getInstance())).
                 isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -60,7 +63,7 @@ public class Cinema3DTest {
         Account account = new CinemaAccount();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
-        cinema.buy(account, 1, 1, date);
+        Ticket ticket1 = cinema.buy(account, 1, 1, date);
         assertThatThrownBy(() -> cinema.buy(account, 1, 1, date)).
                 isInstanceOf(IllegalArgumentException.class);
     }
@@ -69,18 +72,21 @@ public class Cinema3DTest {
     public void whenFindFilmsByDateThenGetTheListOfFilmsByDate() {
         Cinema cinema = new Cinema3D();
         Session session = new Session3D();
+        Calendar sessionsDate = Calendar.getInstance();
+        session.setTheDate(sessionsDate);
         Session session2 = new Session3D();
+        session2.setTheDate(sessionsDate);
         cinema.add(session);
         cinema.add(session2);
-        assertThat(cinema.find(ses -> true)).isEqualTo(List.of(session, session2));
+        assertThat(cinema.find(date -> date.equals(sessionsDate))).isEqualTo(List.of(session, session2));
     }
 
     @Test
-    public void whenNoFilmsFoundByDateThenReturnEmptyList() {
+    public void whenNoFilmsFoundByFilterThenReturnEmptyList() {
         Cinema cinema = new Cinema3D();
         Session session = new Session3D();
         cinema.add(session);
-        assertThat(cinema.find(ses -> true)).isEmpty();
+        assertThat(cinema.find(ses -> false)).isEmpty();
     }
 
 }

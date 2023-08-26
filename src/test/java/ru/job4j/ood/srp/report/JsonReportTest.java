@@ -19,8 +19,12 @@ class JsonReportTest {
         Calendar now = Calendar.getInstance();
         CalendarJsonParser jsonParser = new CalendarJsonParser();
         Employee worker = new Employee("Ivan", now, now, 100);
-        DateTimeParser<Calendar> parser = new ReportDateTimeParser();
+        Employee worker2 = new Employee("Ilya", now, now, 200);
+        Employee worker3 = new Employee("Anton", now, now, 300);
         store.add(worker);
+        store.add(worker2);
+        store.add(worker3);
+        DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         String jsonNow = parser.parse(now);
         GsonBuilder builder = new GsonBuilder();
         JsonReport report = new JsonReport(store, jsonParser, builder);
@@ -32,8 +36,20 @@ class JsonReportTest {
                     "hired": "%s",
                     "fired": "%s",
                     "salary": 100.0
+                  },
+                  {
+                    "name": "Ilya",
+                    "hired": "%s",
+                    "fired": "%s",
+                    "salary": 200.0
+                  },
+                  {
+                    "name": "Anton",
+                    "hired": "%s",
+                    "fired": "%s",
+                    "salary": 300.0
                   }
-                ]""", jsonNow, jsonNow);
+                ]""", jsonNow, jsonNow, jsonNow, jsonNow, jsonNow, jsonNow);
         assertThat(report.generate(em -> true)).isEqualTo(expect);
     }
 }

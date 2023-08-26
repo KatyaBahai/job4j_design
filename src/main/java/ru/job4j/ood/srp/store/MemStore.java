@@ -1,21 +1,17 @@
 package ru.job4j.ood.srp.store;
 
-import ru.job4j.ood.srp.formatter.CalendarXMLParser;
 import ru.job4j.ood.srp.model.Employee;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@XmlRootElement(name = "List")
+@XmlRootElement(name = "Employees")
 public class MemStore implements Store {
-    @XmlElement(name = "Employees")
+    @XmlElement(name = "Employee")
     private final List<Employee> employees = new ArrayList<>();
 
     @Override

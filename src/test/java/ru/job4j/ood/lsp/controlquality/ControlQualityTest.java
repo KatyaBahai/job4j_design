@@ -1,12 +1,11 @@
 package ru.job4j.ood.lsp.controlquality;
 
 import org.junit.jupiter.api.Test;
+import ru.job4j.ood.lsp.food.Bread;
+import ru.job4j.ood.lsp.food.Eggs;
 import ru.job4j.ood.lsp.food.Food;
 import ru.job4j.ood.lsp.food.Milk;
-import ru.job4j.ood.lsp.store.Shop;
-import ru.job4j.ood.lsp.store.Store;
-import ru.job4j.ood.lsp.store.Trash;
-import ru.job4j.ood.lsp.store.Warehouse;
+import ru.job4j.ood.lsp.store.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,65 +16,36 @@ import static org.assertj.core.api.Assertions.*;
 class ControlQualityTest {
 
     @Test
-    void ifShellLifeLongThenPutIntoWarehouse() {
-        Food milk = new Milk("milk",
-                LocalDate.of(2023, 8, 30),
-                LocalDate.of(2023, 9, 30), 110);
-
-        Store wareHouse = new Warehouse("Warehouse");
-        Store shop = new Shop("Shop");
-        Store trash = new Trash("Trash");
-        List<Store> storeList = new ArrayList<>();
-        storeList.add(shop);
-        storeList.add(trash);
-        storeList.add(wareHouse);
-        ControlQuality controlQuality = new ControlQuality(storeList);
-        controlQuality.putIntoStore(milk);
-        assertThat(wareHouse.getList()).contains(milk);
-        assertThat(shop.getList()).isEmpty();
-        assertThat(trash.getList()).isEmpty();
-
-    }
-
-    @Test
     void ifExpiredThenPutIntoTrash() {
         Food milk = new Milk("milk",
                 LocalDate.of(2023, 8, 30),
                 LocalDate.of(2023, 9, 3), 110);
+        Food bread = new Bread("bread",
+                LocalDate.of(2023, 9, 3),
+                LocalDate.of(2023, 9, 30), 80);
+        Food eggs = new Eggs("eggs",
+                LocalDate.of(2023, 7, 30),
+                LocalDate.of(2023, 9, 30), 100);
+        List<Food> foodList = new ArrayList<>();
+        foodList.add(milk);
+        foodList.add(bread);
+        foodList.add(eggs);
 
-        Store wareHouse = new Warehouse("Warehouse");
+        Store warehouse = new Warehouse("Warehouse");
         Store shop = new Shop("Shop");
         Store trash = new Trash("Trash");
         List<Store> storeList = new ArrayList<>();
         storeList.add(shop);
         storeList.add(trash);
-        storeList.add(wareHouse);
+        storeList.add(warehouse);
+
         ControlQuality controlQuality = new ControlQuality(storeList);
-        controlQuality.putIntoStore(milk);
+        LocalDate now = LocalDate.of(2023, 9, 9);
+        controlQuality.putIntoStore(foodList, now);
         assertThat(trash.getList()).contains(milk);
-        assertThat(shop.getList()).isEmpty();
-        assertThat(wareHouse.getList()).isEmpty();
+        assertThat(shop.getList()).contains(eggs);
+        assertThat(warehouse.getList()).contains(bread);
 
     }
 
-    @Test
-    void ifShellLife50PercentThenPutIntoShop() {
-        Food milk = new Milk("milk",
-                LocalDate.of(2023, 8, 30),
-                LocalDate.of(2023, 9, 12), 110);
-
-        Store wareHouse = new Warehouse("Warehouse");
-        Store shop = new Shop("Shop");
-        Store trash = new Trash("Trash");
-        List<Store> storeList = new ArrayList<>();
-        storeList.add(shop);
-        storeList.add(trash);
-        storeList.add(wareHouse);
-        ControlQuality controlQuality = new ControlQuality(storeList);
-        controlQuality.putIntoStore(milk);
-        assertThat(shop.getList()).contains(milk);
-        assertThat(trash.getList()).isEmpty();
-        assertThat(wareHouse.getList()).isEmpty();
-
-    }
 }

@@ -9,22 +9,21 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public abstract class AbstractStore implements Store {
-    private String storeType;
-    private List<Food> abstractList = new ArrayList<>();
-    private final Predicate<Double> predicate;
+    protected static final int UPPER_BOUND = 75;
+    protected static final int LOWER_BOUND = 25;
+    protected String storeType;
+    protected List<Food> abstractList = new ArrayList<>();
+    protected final Predicate<Double> predicate;
 
+
+    @Override
+    public Predicate<Double> getPredicate() {
+        return predicate;
+    };
 
     public AbstractStore(Predicate<Double> predicate, String storeType) {
         this.predicate = predicate;
         this.storeType = storeType;
-    }
-
-    public String getStoreType() {
-        return this.storeType;
-    }
-
-    public Predicate<Double> getPredicate() {
-        return predicate;
     }
 
     @Override
@@ -42,16 +41,22 @@ public abstract class AbstractStore implements Store {
         abstractList.forEach(System.out::println);
     }
 
-    private double calculateShelfLifePercent(Food food) {
+    private double calculateShelfLifePercent(Food food,  LocalDate now) {
         LocalDate expDate = food.getExpirationDate();
-        return (double) ChronoUnit.DAYS.between(LocalDate.now(), expDate) / (double) ChronoUnit.DAYS.between(food.getManufactureDate(), expDate) * 100.0;
+        return (double) ChronoUnit.DAYS.between(now, expDate) / (double) ChronoUnit.DAYS.between(food.getManufactureDate(), expDate) * 100.0;
     }
 
-    public boolean isWithinDateRange(Food food, Predicate<Double> predicate) {
-        return predicate.test(calculateShelfLifePercent(food));
+    public boolean isWithinDateRange(Food food, Predicate<Double> predicate, LocalDate now) {
+        return predicate.test(calculateShelfLifePercent(food, now));
     }
 
+    @Override
     public List<Food> getList() {
         return abstractList;
+    }
+
+    @Override
+    public String getName() {
+        return storeType;
     }
 }

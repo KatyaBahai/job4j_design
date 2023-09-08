@@ -1,10 +1,9 @@
 package ru.job4j.ood.lsp.food;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Food {
+public abstract class Food {
     private String name;
     private LocalDate manufactureDate;
     private LocalDate expirationDate;

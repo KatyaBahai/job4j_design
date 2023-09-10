@@ -1,4 +1,4 @@
-package ru.job4j.ood.lsp.store;
+package ru.job4j.ood.lsp.foodstorage.store;
 
 public class Trash  extends AbstractStore {
 

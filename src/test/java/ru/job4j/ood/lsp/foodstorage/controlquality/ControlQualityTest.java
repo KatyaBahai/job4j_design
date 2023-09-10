@@ -1,11 +1,11 @@
 package ru.job4j.ood.lsp.foodstorage.controlquality;
 
 import org.junit.jupiter.api.Test;
-import ru.job4j.ood.lsp.food.Bread;
-import ru.job4j.ood.lsp.food.Eggs;
-import ru.job4j.ood.lsp.food.Food;
-import ru.job4j.ood.lsp.food.Milk;
-import ru.job4j.ood.lsp.store.*;
+import ru.job4j.ood.lsp.foodstorage.food.Bread;
+import ru.job4j.ood.lsp.foodstorage.food.Eggs;
+import ru.job4j.ood.lsp.foodstorage.food.Food;
+import ru.job4j.ood.lsp.foodstorage.food.Milk;
+import ru.job4j.ood.lsp.foodstorage.store.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

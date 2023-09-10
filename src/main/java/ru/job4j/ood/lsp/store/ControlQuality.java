@@ -16,7 +16,7 @@ public class ControlQuality {
     public void putIntoStore(List<Food> foodList, LocalDate now) {
         for (Food food : foodList) {
             for (Store store : storeList) {
-                if (store.isWithinDateRange(food, store.getPredicate(), now)) {
+                if (store.isWithinDateRange(food, now)) {
                     store.add(food);
                     System.out.printf("%s was put into %s\n", food.getName(), store.getName());
                 }

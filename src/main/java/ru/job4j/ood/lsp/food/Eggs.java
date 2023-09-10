@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 
 public class Eggs extends Food {
     public Eggs(String name, LocalDate manufactureDate, LocalDate expirationDate, double price) {
-        super(name, manufactureDate, expirationDate, price);
+        this.name = name;
+        this.manufactureDate = manufactureDate;
+        this.expirationDate = expirationDate;
+        this.price = price;
     }
 }

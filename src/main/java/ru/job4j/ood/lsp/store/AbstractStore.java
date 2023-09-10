@@ -41,12 +41,14 @@ public abstract class AbstractStore implements Store {
         abstractList.forEach(System.out::println);
     }
 
-    private double calculateShelfLifePercent(Food food,  LocalDate now) {
+    @Override
+    public double calculateShelfLifePercent(Food food,  LocalDate now) {
         LocalDate expDate = food.getExpirationDate();
         return (double) ChronoUnit.DAYS.between(now, expDate) / (double) ChronoUnit.DAYS.between(food.getManufactureDate(), expDate) * 100.0;
     }
 
-    public boolean isWithinDateRange(Food food, Predicate<Double> predicate, LocalDate now) {
+    @Override
+    public boolean isWithinDateRange(Food food, LocalDate now) {
         return predicate.test(calculateShelfLifePercent(food, now));
     }
 

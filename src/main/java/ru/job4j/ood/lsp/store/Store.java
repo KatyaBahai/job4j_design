@@ -14,7 +14,9 @@ public interface Store {
 
     void printProducts();
 
-    boolean isWithinDateRange(Food food, Predicate<Double> predicate, LocalDate now);
+    boolean isWithinDateRange(Food food, LocalDate now);
+
+    double calculateShelfLifePercent(Food food,  LocalDate now);
 
     Predicate<Double> getPredicate();
 

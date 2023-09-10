@@ -4,18 +4,11 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public abstract class Food {
-    private String name;
-    private LocalDate manufactureDate;
-    private LocalDate expirationDate;
-    private double price;
+    protected String name;
+    protected LocalDate manufactureDate;
+    protected LocalDate expirationDate;
+    protected double price;
 
-
-    public Food(String name, LocalDate manufactureDate, LocalDate expirationDate, double price) {
-        this.name = name;
-        this.manufactureDate = manufactureDate;
-        this.expirationDate = expirationDate;
-        this.price = price;
-    }
 
     public String getName() {
         return name;

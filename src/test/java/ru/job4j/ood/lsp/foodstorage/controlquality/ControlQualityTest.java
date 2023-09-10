@@ -1,4 +1,4 @@
-package ru.job4j.ood.lsp.controlquality;
+package ru.job4j.ood.lsp.foodstorage.controlquality;
 
 import org.junit.jupiter.api.Test;
 import ru.job4j.ood.lsp.food.Bread;

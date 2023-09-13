@@ -17,28 +17,6 @@ public class MegaParkingLot implements ParkingLot {
         this.truckSpaceCount = truckSpaceCount;
     }
 
-  /*    @Override
-    public boolean park(Vehicle vehicle) {
-        boolean parked = false;
-        int spaceRequired = vehicle.getSpaceRequired();
-            put(vehicle, spaceRequired);
-            // vehicleMap.put(vehicle, 1);
-           // carSpaceCount--;
-            parked = true;
-        }
-        if (spaceRequired > 1 && truckSpaceCount > 0) {
-            vehicleMap.put(vehicle, 1);
-            truckSpaceCount--;
-            parked = true;
-        }
-      if (spaceRequired > 1 && truckSpaceCount < 1 && carSpaceCount > spaceRequired) {
-            vehicleMap.put(vehicle, spaceRequired);
-            carSpaceCount -= spaceRequired;
-            parked = true;
-        }
-        return parked;
-    } */
-
     @Override
     public boolean park(Vehicle vehicle) {
         boolean parked = false;

@@ -11,4 +11,8 @@ public interface ParkingLot {
     List<Vehicle> getVehicleList();
 
     void unPark(Vehicle vehicle);
+
+    int getCarSpaceCount();
+
+    int getTruckSpaceCount();
 }

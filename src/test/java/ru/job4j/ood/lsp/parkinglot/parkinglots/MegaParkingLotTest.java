@@ -16,7 +16,6 @@ class MegaParkingLotTest {
         Vehicle ferrariCar = new Car("ferrari");
         megaPark.park(ferrariCar);
         assertThat(megaPark.getVehicleList()).contains(ferrariCar);
-
     }
 
     @Test
@@ -65,4 +64,18 @@ class MegaParkingLotTest {
         assertThat(megaPark.getVehicleList()).containsExactly(fordTruck);
     }
 
+    @Test
+    void ifParkingLotIsFullThenCarsCantBeParked() {
+        ParkingLot megaPark = new MegaParkingLot(3, 1);
+        Vehicle ferrariCar = new Car("ferrari");
+        megaPark.park(ferrariCar);
+        Vehicle fordTruck = new Truck("ford", 2);
+        megaPark.park(fordTruck);
+        Vehicle volkswagenTruck = new Truck("volkswagen", 2);
+        megaPark.park(volkswagenTruck);
+        Vehicle ladaCar = new Car("lada");
+        assertThat(megaPark.park(ladaCar)).isFalse();
+        assertThat(megaPark.getTruckSpaceCount()).isEqualTo(0);
+        assertThat(megaPark.getCarSpaceCount()).isEqualTo(0);
+    }
 }

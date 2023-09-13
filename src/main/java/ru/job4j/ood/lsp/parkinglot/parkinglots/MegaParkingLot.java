@@ -17,13 +17,13 @@ public class MegaParkingLot implements ParkingLot {
         this.truckSpaceCount = truckSpaceCount;
     }
 
-    @Override
+  /*    @Override
     public boolean park(Vehicle vehicle) {
         boolean parked = false;
         int spaceRequired = vehicle.getSpaceRequired();
-        if (spaceRequired == 1 && carSpaceCount > 0) {
-            vehicleMap.put(vehicle, 1);
-            carSpaceCount--;
+            put(vehicle, spaceRequired);
+            // vehicleMap.put(vehicle, 1);
+           // carSpaceCount--;
             parked = true;
         }
         if (spaceRequired > 1 && truckSpaceCount > 0) {
@@ -31,7 +31,24 @@ public class MegaParkingLot implements ParkingLot {
             truckSpaceCount--;
             parked = true;
         }
-        if (spaceRequired > 1 && truckSpaceCount < 1 && carSpaceCount > spaceRequired) {
+      if (spaceRequired > 1 && truckSpaceCount < 1 && carSpaceCount > spaceRequired) {
+            vehicleMap.put(vehicle, spaceRequired);
+            carSpaceCount -= spaceRequired;
+            parked = true;
+        }
+        return parked;
+    } */
+
+    @Override
+    public boolean park(Vehicle vehicle) {
+        boolean parked = false;
+        int spaceRequired = vehicle.getSpaceRequired();
+        if (spaceRequired > 1 && truckSpaceCount > 0) {
+            vehicleMap.put(vehicle, 1);
+            truckSpaceCount--;
+            parked = true;
+        }
+        if (carSpaceCount > 0 && carSpaceCount >= spaceRequired) {
             vehicleMap.put(vehicle, spaceRequired);
             carSpaceCount -= spaceRequired;
             parked = true;
@@ -47,15 +64,20 @@ public class MegaParkingLot implements ParkingLot {
     @Override
     public void unPark(Vehicle vehicle) {
         int spaceRequired = vehicle.getSpaceRequired();
-        if (spaceRequired == 1) {
-            carSpaceCount++;
-        }
         if (spaceRequired > 1 && vehicleMap.get(vehicle) == 1) {
-            truckSpaceCount--;
+            truckSpaceCount++;
         }
-        if (spaceRequired > 1 && vehicleMap.get(vehicle) > 1) {
+        if ((spaceRequired == 1) || (spaceRequired > 1 && vehicleMap.get(vehicle) > 1)) {
             carSpaceCount += spaceRequired;
         }
         vehicleMap.remove(vehicle);
+    }
+
+    public int getCarSpaceCount() {
+        return carSpaceCount;
+    }
+
+    public int getTruckSpaceCount() {
+        return truckSpaceCount;
     }
 }

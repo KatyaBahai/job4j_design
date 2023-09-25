@@ -54,12 +54,12 @@ public class SimpleMenuTest {
     @Test
     public void whenPrinted() {
         System.setOut(new PrintStream(outputStreamCaptor));
-        String expected = """
-  ---1.Сходить в магазин
-  ------1.1.Купить продукты
-  ---------1.1.1.Купить хлеб
-  ---------1.1.2.Купить молоко
-  ---2.Покормить собаку""";
+        String d = System.lineSeparator();
+        String expected = "---1.Сходить в магазин" + d
+                + "------1.1.Купить продукты" + d
+                + "---------1.1.1.Купить хлеб" + d
+                + "---------1.1.2.Купить молоко" + d
+                + "---2.Покормить собаку";
         MenuPrinter printer = new SimpleMenuPrinter();
         printer.print(menu);
         assertThat(outputStreamCaptor.toString().trim()).isEqualTo(expected);

@@ -3,6 +3,7 @@ package ru.job4j.ood.lsp.foodstorage.store;
 import ru.job4j.ood.lsp.foodstorage.food.Food;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControlQuality {
@@ -23,5 +24,14 @@ public class ControlQuality {
             }
         }
 
+    }
+
+    public void resort(LocalDate now) {
+        List<Food> foodList = new ArrayList<>();
+        for (Store store : storeList) {
+            foodList.addAll(store.getList());
+            store.getList().clear();
+        }
+        putIntoStore(foodList, now);
     }
 }
